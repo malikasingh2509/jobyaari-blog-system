@@ -47,5 +47,7 @@ RUN php artisan view:clear
 RUN php artisan migrate --force
 
 EXPOSE 10000
+RUN php artisan migrate --force
+RUN php artisan db:seed --force
 
 CMD php artisan serve --host=0.0.0.0 --port=10000
