@@ -2,6 +2,7 @@ FROM php:8.4-cli
 
 WORKDIR /app
 
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -21,16 +22,26 @@ RUN docker-php-ext-install zip pdo pdo_sqlite
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy project
+# Copy project files
 COPY . .
 
 # Install dependencies
 RUN composer install
 RUN npm install
+
+# Build Vite assets
 RUN npm run build
 
-# Create SQLite DB
+# Ensure storage permissions
+RUN chmod -R 777 storage bootstrap/cache
+
+# Create SQLite database
 RUN touch database/database.sqlite
+
+# Laravel cache clear
+RUN php artisan config:clear
+RUN php artisan cache:clear
+RUN php artisan view:clear
 
 # Run migrations
 RUN php artisan migrate --force
