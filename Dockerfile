@@ -1,16 +1,21 @@
-FROM php:8.2-cli
+FROM php:8.4-cli
 
 RUN apt-get update && apt-get install -y \
-    git unzip curl libzip-dev zip nodejs npm
+    git \
+    unzip \
+    curl \
+    libzip-dev \
+    zip \
+    nodejs \
+    npm
 
 RUN docker-php-ext-install zip
 
-COPY . /app
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
 
-RUN curl -sS https://getcomposer.org/installer | php && \
-    mv composer.phar /usr/local/bin/composer
+COPY . .
 
 RUN composer install
 
