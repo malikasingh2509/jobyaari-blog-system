@@ -10,14 +10,15 @@ RUN apt-get update && apt-get install -y \
     zip \
     libzip-dev \
     sqlite3 \
-    libsqlite3-dev
+    libsqlite3-dev \
+    default-mysql-client
 
 # Install Node.js
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
 RUN apt-get install -y nodejs
 
 # Install PHP extensions
-RUN docker-php-ext-install zip pdo pdo_sqlite
+RUN docker-php-ext-install zip pdo pdo_mysql
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -26,28 +27,21 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY . .
 
 # Install dependencies
-RUN composer install
+RUN composer install --no-dev --optimize-autoloader
 RUN npm install
 
-# Build Vite assets
+# Build frontend assets
 RUN npm run build
 
-# Ensure storage permissions
+# Permissions
 RUN chmod -R 777 storage bootstrap/cache
 
-# Create SQLite database
-RUN touch database/database.sqlite
-
-# Laravel cache clear
-RUN php artisan config:clear
-RUN php artisan cache:clear
-RUN php artisan view:clear
+# Clear Laravel cache
+RUN php artisan optimize:clear
 
 # Run migrations
 RUN php artisan migrate --force
 
 EXPOSE 10000
-RUN php artisan migrate --force
-RUN php artisan db:seed --force
 
 CMD php artisan serve --host=0.0.0.0 --port=10000
