@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use Illuminate\Http\Request;
+use Cloudinary\Cloudinary;
 
 class BlogController extends Controller
 {
@@ -45,22 +46,26 @@ class BlogController extends Controller
 
         $imageName = null;
 
-        if ($request->hasFile('image')) {
+            if ($request->hasFile('image')) {
 
-            $destinationPath = public_path('images');
+                $cloudinary = new Cloudinary(
+                    [
+                        'cloud' => [
+                            'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+                            'api_key'    => env('CLOUDINARY_API_KEY'),
+                            'api_secret' => env('CLOUDINARY_API_SECRET'),
+                        ],
+                    ]
+                );
 
-            // Create folder if not exists
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0777, true);
+                $uploadedFile = $cloudinary
+                    ->uploadApi()
+                    ->upload(
+                        $request->file('image')->getRealPath()
+                    );
+
+                $imageName = $uploadedFile['secure_url'];
             }
-
-            $imageName = time() . '.' . $request->image->extension();
-
-            $request->image->move(
-                $destinationPath,
-                $imageName
-            );
-        }
 
         Blog::create([
             'title' => $request->title,
@@ -85,24 +90,28 @@ class BlogController extends Controller
 
     public function update(Request $request, Blog $blog)
     {
-        $imageName = $blog->image;
+        $imageName = null;
 
-        if ($request->hasFile('image')) {
+            if ($request->hasFile('image')) {
 
-            $destinationPath = public_path('images');
+                $cloudinary = new Cloudinary(
+                    [
+                        'cloud' => [
+                            'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+                            'api_key'    => env('CLOUDINARY_API_KEY'),
+                            'api_secret' => env('CLOUDINARY_API_SECRET'),
+                        ],
+                    ]
+                );
 
-            // Create folder if not exists
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0777, true);
+                $uploadedFile = $cloudinary
+                    ->uploadApi()
+                    ->upload(
+                        $request->file('image')->getRealPath()
+                    );
+
+                $imageName = $uploadedFile['secure_url'];
             }
-
-            $imageName = time() . '.' . $request->image->extension();
-
-            $request->image->move(
-                $destinationPath,
-                $imageName
-            );
-        }
 
         $blog->update([
             'title' => $request->title,
