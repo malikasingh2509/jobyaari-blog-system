@@ -1,3 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+
+<body class="bg-gray-100">
 
     <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 px-6 py-10">
 
@@ -87,13 +98,11 @@
 
                 </div>
 
-                <!-- Session Status -->
                 <x-auth-session-status class="mb-4" :status="session('status')" />
 
                 <form method="POST" action="{{ route('login') }}" class="space-y-6">
                     @csrf
 
-                    <!-- Email -->
                     <div>
                         <x-input-label for="email" :value="__('Email')" />
 
@@ -111,7 +120,6 @@
                         <x-input-error :messages="$errors->get('email')" class="mt-2" />
                     </div>
 
-                    <!-- Password -->
                     <div>
                         <x-input-label for="password" :value="__('Password')" />
 
@@ -127,7 +135,6 @@
                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
                     </div>
 
-                    <!-- Remember -->
                     <div class="flex items-center justify-between">
 
                         <label for="remember_me" class="inline-flex items-center">
@@ -154,7 +161,6 @@
 
                     </div>
 
-                    <!-- BUTTON -->
                     <button
                         type="submit"
                         class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:scale-105 transition duration-300 text-white font-bold py-4 rounded-2xl shadow-xl"
@@ -170,3 +176,5 @@
 
     </div>
 
+</body>
+</html>
