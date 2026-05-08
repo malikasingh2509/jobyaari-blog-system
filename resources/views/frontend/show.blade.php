@@ -65,7 +65,7 @@
 
                 <div style="line-height:2; font-size:17px;">
 
-                    {!! nl2br(e($blog->content)) !!}
+                    {!! $blog->content !!}
 
                 </div>
 
