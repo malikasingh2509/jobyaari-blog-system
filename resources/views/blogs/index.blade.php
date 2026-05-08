@@ -396,7 +396,7 @@ table{
 
                     <td>
 
-                        <img src="{{ $blog->image }}">
+                        <img src="{{ asset('images/' . $blog->image) }}">
 
                     </td>
 
@@ -465,7 +465,7 @@ table{
 
     <div class="mobile-card">
 
-        <img src="{{ $blog->image}}"
+        <img src="{{ asset('images/' . $blog->image) }}"
              class="mobile-img">
 
         <h4>{{ $blog->title }}</h4>
