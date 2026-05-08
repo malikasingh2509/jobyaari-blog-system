@@ -47,7 +47,7 @@
 
                 @if($blog->image)
 
-                <img src="{{ asset('images/'.$blog->image) }}"
+                <img src="{{ $blog->image }}"
                      alt="blog image">
 
                 @endif
@@ -141,7 +141,7 @@
 
                     @if($recent->image)
 
-                    <img src="{{ asset('images/'.$recent->image) }}"
+                    <img src="{{ $blog->image }}"
                          width="90"
                          height="70"
                          style="object-fit:cover; border-radius:12px;">
