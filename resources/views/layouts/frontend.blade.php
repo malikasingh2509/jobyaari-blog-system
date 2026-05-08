@@ -546,7 +546,9 @@ footer p{
 
                 <li class="nav-item ms-3">
 
-                    <form action="/search" method="GET">
+                    <form action="{{ route('frontend.search') }}"
+                        method="GET"
+                        class="d-flex">
 
                         <input type="text"
                             name="search"
