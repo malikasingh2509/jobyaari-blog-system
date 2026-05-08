@@ -121,7 +121,7 @@
 
                     @if($recent->image)
 
-                    <img src="{{ $blog->image }}"
+                    <img src="{{ $recent->image }}"
                          width="90"
                          height="70"
                          style="object-fit:cover; border-radius:12px;">
