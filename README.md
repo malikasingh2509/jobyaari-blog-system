@@ -13,13 +13,6 @@ Admin Panel:
 https://jobyaari-blog-system-dt6i.onrender.com/login
 ---
 
-# Admin Credentials
-
-Email: admin@jobyaari.com 
-Password: admin123
-
----
-
 # Features
 
 ## Frontend Features
