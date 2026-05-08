@@ -4,32 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use Illuminate\Http\Request;
-use Cloudinary\Cloudinary;
-use Cloudinary\Configuration\Configuration;
 
 class BlogController extends Controller
 {
-   public function index()
-{
-    $blogs = Blog::latest()->get();
+    public function index()
+    {
+        $blogs = Blog::latest()->get();
 
-    $totalBlogs = Blog::count();
+        $totalBlogs = Blog::count();
 
-    $totalCategories = Blog::distinct()
-                            ->count('category');
+        $totalCategories = Blog::distinct()
+                                ->count('category');
 
-    $latestBlog = Blog::latest()->first();
+        $latestBlog = Blog::latest()->first();
 
-    return view(
-        'blogs.index',
-        compact(
-            'blogs',
-            'totalBlogs',
-            'totalCategories',
-            'latestBlog'
-        )
-    );
-}
+        return view(
+            'blogs.index',
+            compact(
+                'blogs',
+                'totalBlogs',
+                'totalCategories',
+                'latestBlog'
+            )
+        );
+    }
 
     public function create()
     {
@@ -39,36 +37,22 @@ class BlogController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-        'title' => 'required',
-        'short_description' => 'required',
-        'content' => 'required',
-        'category' => 'required',
+            'title' => 'required',
+            'short_description' => 'required',
+            'content' => 'required',
+            'category' => 'required',
         ]);
+
         $imageName = null;
 
         if ($request->hasFile('image')) {
 
-            Configuration::instance([
-                'cloud' => [
-                    'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
-                    'api_key' => env('CLOUDINARY_API_KEY'),
-                    'api_secret' => env('CLOUDINARY_API_SECRET'),
-                ],
-                'url' => [
-                    'secure' => true
-                ]
-            ]);
+            $imageName = time().'.'.$request->image->extension();
 
-            $cloudinary = new Cloudinary();
-
-            $upload = $cloudinary->uploadApi()->upload(
-                $request->file('image')->getRealPath(),
-                [
-                    'folder' => 'jobyaari_blogs'
-                ]
+            $request->image->move(
+                public_path('images'),
+                $imageName
             );
-
-            $imageName = $upload['secure_url'];
         }
 
         Blog::create([
@@ -98,27 +82,12 @@ class BlogController extends Controller
 
         if ($request->hasFile('image')) {
 
-            Configuration::instance([
-                'cloud' => [
-                    'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
-                    'api_key' => env('CLOUDINARY_API_KEY'),
-                    'api_secret' => env('CLOUDINARY_API_SECRET'),
-                ],
-                'url' => [
-                    'secure' => true
-                ]
-            ]);
+            $imageName = time().'.'.$request->image->extension();
 
-            $cloudinary = new Cloudinary();
-
-            $upload = $cloudinary->uploadApi()->upload(
-                $request->file('image')->getRealPath(),
-                [
-                    'folder' => 'jobyaari_blogs'
-                ]
+            $request->image->move(
+                public_path('images'),
+                $imageName
             );
-
-            $imageName = $upload['secure_url'];
         }
 
         $blog->update([
@@ -135,111 +104,107 @@ class BlogController extends Controller
     public function destroy(Blog $blog)
     {
         $blog->delete();
+
         return redirect('/blogs');
     }
-public function filter(Request $request)
-{
-    $blogs = Blog::query();
 
-    // SEARCH
-
-    if($request->search)
+    public function filter(Request $request)
     {
-        $blogs->where('title', 'like', '%'.$request->search.'%');
-    }
+        $blogs = Blog::query();
 
-    // CATEGORY
+        if($request->search)
+        {
+            $blogs->where('title', 'like', '%'.$request->search.'%');
+        }
 
-    if($request->category)
-    {
-        $blogs->where('category', $request->category);
-    }
+        if($request->category)
+        {
+            $blogs->where('category', $request->category);
+        }
 
-    // DATE
+        if($request->date)
+        {
+            $blogs->whereDate('created_at', $request->date);
+        }
 
-    if($request->date)
-    {
-        $blogs->whereDate('created_at', $request->date);
-    }
+        $blogs = $blogs->latest()->get();
 
-    $blogs = $blogs->latest()->get();
+        $output = '';
 
-    $output = '';
-
-    foreach($blogs as $blog)
-    {
-        $output .= '
-
-        <div class="col-md-4 mb-4">
-
-            <div class="card h-100 shadow-sm">';
-
-        if($blog->image)
+        foreach($blogs as $blog)
         {
             $output .= '
 
-                <img src="'.$blog->image.'"
-                     class="card-img-top"
-                     height="200"
-                     style="object-fit:cover;">';
+            <div class="col-md-4 mb-4">
+
+                <div class="card h-100 shadow-sm">';
+
+            if($blog->image)
+            {
+                $output .= '
+
+                    <img src="/images/'.$blog->image.'"
+                         class="card-img-top"
+                         height="200"
+                         style="object-fit:cover;">';
+            }
+
+            $output .= '
+
+                <div class="card-body d-flex flex-column">
+
+                    <h5 class="card-title">
+                        '.$blog->title.'
+                    </h5>
+
+                    <p class="card-text">
+                        '.$blog->short_description.'
+                    </p>
+
+                    <p>
+                    <strong>Category:</strong>
+                      '.$blog->category.'
+                    </p>
+
+                    <p class="text-muted small">
+                      Posted on:
+                      '.$blog->created_at->format('d M Y, h:i A').'
+                    </p>
+
+                    <div class="mt-auto">
+
+                    <a href="/blogs/'.$blog->id.'"
+                      class="btn btn-primary btn-sm">
+                       View
+                    </a>
+
+                    <a href="/blogs/'.$blog->id.'/edit"
+                         class="btn btn-warning btn-sm">
+                        Edit
+                    </a>
+
+                    <form action="/blogs/'.$blog->id.'"
+                        method="POST"
+                        style="display:inline;">
+
+                        '.csrf_field().'
+                        '.method_field('DELETE').'
+
+                        <button class="btn btn-danger btn-sm">
+                          Delete
+                        </button>
+
+                    </form>
+
+                </div>
+
+                </div>
+
+                </div>
+
+            </div>';
         }
 
-        $output .= '
-
-            <div class="card-body d-flex flex-column">
-
-                <h5 class="card-title">
-                    '.$blog->title.'
-                </h5>
-
-                <p class="card-text">
-                    '.$blog->short_description.'
-                </p>
-
-                <p>
-                <strong>Category:</strong>
-                  '.$blog->category.'
-                </p>
-
-                <p class="text-muted small">
-                  Posted on:
-                  '.$blog->created_at->format('d M Y, h:i A').'
-                </p>
-
-                <div class="mt-auto">
-
-                <a href="/blogs/'.$blog->id.'"
-                  class="btn btn-primary btn-sm">
-                   View
-                </a>
-
-                <a href="/blogs/'.$blog->id.'/edit"
-                     class="btn btn-warning btn-sm">
-                    Edit
-                </a>
-
-                <form action="/blogs/'.$blog->id.'"
-                    method="POST"
-                    style="display:inline;">
-
-                    '.csrf_field().'
-                    '.method_field('DELETE').'
-
-                    <button class="btn btn-danger btn-sm">
-                      Delete
-                    </button>
-
-                </form>
-
-            </div>
-
-            </div>
-
-            </div>
-
-        </div>';
+        return $output;
     }
-
-    return $output;
-}
 }
