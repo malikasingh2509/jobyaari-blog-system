@@ -51,7 +51,7 @@
     <div class="card">
 
         @if($blog->image)
-            <img src="{{ asset('images/'.$blog->image) }}"
+            <img src="{{ $blog->image}}"
                  class="card-img-top"
                  height="400"
                  style="object-fit:cover;">

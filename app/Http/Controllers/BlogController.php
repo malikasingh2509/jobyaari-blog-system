@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use Illuminate\Http\Request;
+use Cloudinary\Cloudinary;
+use Cloudinary\Configuration\Configuration;
 
 class BlogController extends Controller
 {
@@ -45,8 +47,28 @@ class BlogController extends Controller
         $imageName = null;
 
         if ($request->hasFile('image')) {
-            $imageName = time().'.'.$request->image->extension();
-            $request->image->move(public_path('images'), $imageName);
+
+            Configuration::instance([
+                'cloud' => [
+                    'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+                    'api_key' => env('CLOUDINARY_API_KEY'),
+                    'api_secret' => env('CLOUDINARY_API_SECRET'),
+                ],
+                'url' => [
+                    'secure' => true
+                ]
+            ]);
+
+            $cloudinary = new Cloudinary();
+
+            $upload = $cloudinary->uploadApi()->upload(
+                $request->file('image')->getRealPath(),
+                [
+                    'folder' => 'jobyaari_blogs'
+                ]
+            );
+
+            $imageName = $upload['secure_url'];
         }
 
         Blog::create([
@@ -75,8 +97,28 @@ class BlogController extends Controller
         $imageName = $blog->image;
 
         if ($request->hasFile('image')) {
-            $imageName = time().'.'.$request->image->extension();
-            $request->image->move(public_path('images'), $imageName);
+
+            Configuration::instance([
+                'cloud' => [
+                    'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+                    'api_key' => env('CLOUDINARY_API_KEY'),
+                    'api_secret' => env('CLOUDINARY_API_SECRET'),
+                ],
+                'url' => [
+                    'secure' => true
+                ]
+            ]);
+
+            $cloudinary = new Cloudinary();
+
+            $upload = $cloudinary->uploadApi()->upload(
+                $request->file('image')->getRealPath(),
+                [
+                    'folder' => 'jobyaari_blogs'
+                ]
+            );
+
+            $imageName = $upload['secure_url'];
         }
 
         $blog->update([
@@ -136,7 +178,7 @@ public function filter(Request $request)
         {
             $output .= '
 
-                <img src="/images/'.$blog->image.'"
+                <img src="'.$blog->image.'"
                      class="card-img-top"
                      height="200"
                      style="object-fit:cover;">';
