@@ -73,7 +73,7 @@
             <label>Content</label>
 
             <textarea name="content"
-                      class="form-control">{{ {!! $blog->content !!}}}</textarea>
+                      class="form-control">{{!! $blog->content !!}}</textarea>
         </div>
 
         <div class="mb-3">
