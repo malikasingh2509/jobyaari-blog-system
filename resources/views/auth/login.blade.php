@@ -1,4 +1,3 @@
-<x-guest-layout>
 
     <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 px-6 py-10">
 
@@ -171,4 +170,3 @@
 
     </div>
 
-</x-guest-layout>
