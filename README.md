@@ -1,58 +1,187 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# JobYaari Blog System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modern Laravel-based job and blog portal where admins can manage job-related blogs, results, admit cards, placements, and other updates through a responsive admin dashboard.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# Live Demo
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Frontend:
+https://jobyaari-blog-system-dt6i.onrender.com
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Admin Panel:
+https://jobyaari-blog-system-dt6i.onrender.com/login
+---
 
-## Learning Laravel
+# Admin Credentials
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Email: admin@jobyaari.com 
+Password: admin123
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+# Features
 
-## Agentic Development
+## Frontend Features
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+- Responsive homepage
+- Blog listing section
+- Blog detail page
+- Search blogs
+- Category-wise filtering
+- Recent blogs sidebar
+- Modern UI design
+- Mobile responsive layout
+
+## Admin Features
+
+- Secure admin login
+- Add new blogs
+- Edit blogs
+- Delete blogs
+- Upload blog images
+- Manage categories
+- Dashboard interface
+- Rich text blog editor
+
+---
+
+# Tech Stack
+
+## Backend
+- Laravel 13
+- PHP
+- MySQL
+
+## Frontend
+- HTML
+- CSS
+- Bootstrap 5
+- JavaScript
+- jQuery
+- AJAX
+
+## Deployment
+- GitHub
+- Render
+
+---
+
+# Installation & Setup
+
+## 1. Clone Repository
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/malikasingh2509/jobyaari-blog-system
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+---
 
-## Contributing
+## 2. Open Project
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+cd jobyaari-blog-system
+```
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 3. Install Dependencies
 
-## Security Vulnerabilities
+```bash
+composer install
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+npm install
+```
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 4. Configure Environment File
+
+Create `.env` file and configure:
+
+```env
+APP_NAME=JobYaari
+APP_ENV=local
+APP_KEY=
+APP_DEBUG=true
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_database_name
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+---
+
+## 5. Generate Application Key
+
+```bash
+php artisan key:generate
+```
+
+---
+
+## 6. Run Migrations
+
+```bash
+php artisan migrate
+```
+
+---
+
+## 7. Start Development Server
+
+```bash
+php artisan serve
+```
+
+---
+
+# Project Structure
+
+```text
+app/
+resources/views/
+routes/
+public/
+database/
+```
+
+---
+
+# Main Functionalities
+
+- CRUD Operations for blogs
+- Dynamic filtering system
+- Search functionality
+- Image upload system
+- Responsive UI
+- Authentication system
+- Category management
+
+---
+
+# Deployment
+
+The project is deployed on Render and source code is hosted on GitHub.
+
+---
+
+# Future Improvements
+
+- User authentication
+- Comments system
+- Blog likes
+- Pagination
+- Rich text formatting
+- SEO optimization
+
+---
+
+# Author
+
+Malika Singh
